@@ -89,8 +89,8 @@ int importGLInit()
 
 #ifdef LINUX
 #ifdef ANDROID_NDK
-//    sGLESSO = dlopen("libGLESv1_CM.so", RTLD_NOW); //ghd214
-    sGLESSO = dlopen("libGLESv2.so", RTLD_NOW); //ghd214
+    sGLESSO = dlopen("libGLESv1_CM.so", RTLD_NOW); //ghd214
+//    sGLESSO = dlopen("libGLESv2.so", RTLD_NOW); //ghd214
       
 #else /* !ANDROID_NDK */
     sGLESSO = dlopen("libGLES_CM.so", RTLD_NOW);
