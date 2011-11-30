@@ -1,7 +1,7 @@
 /*
  *
  */
-package com.ellismarkov.irrlicht;
+package com.strom.irrlicht.rabbit;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -37,7 +37,7 @@ public class IrrlichtTest extends Activity {
 
 	private IrrlichtGLView mGLView;
 	RokonAudio rokonAudio;
-    SoundFile exploreSound;
+    static SoundFile exploreSound;
     SoundFile exploreSound1;
     SoundFile fireSound;
 
@@ -54,16 +54,16 @@ public class IrrlichtTest extends Activity {
 //        	 setting_info.edit().putString(IS_COPY, "true");
 //        }
        
-        RokonMusic.play(this, "sounds/backgroundmusic.mp3", false);
-        
+        RokonMusic.play(this, "sounds/ingame_loog.ogg", false);
+    
         rokonAudio = new RokonAudio();
         rokonAudio.setMasterVolume(7);
         
         exploreSound = rokonAudio.createSoundFile(this, "sounds/cannon3.ogg");
-        exploreSound1 = rokonAudio.createSoundFile(this,"sounds/cannon2.mp3");
-        fireSound = rokonAudio.createSoundFile(this, "sounds/fire.ogg");
+//        exploreSound1 = rokonAudio.createSoundFile(this,"sounds/cannon2.mp3");
+//        fireSound = rokonAudio.createSoundFile(this, "sounds/fire.ogg");
 
-        exploreSound.play();
+        
         Utils.copyFileFromSdcard(getAssets());
         
         try {
@@ -72,11 +72,15 @@ public class IrrlichtTest extends Activity {
             Log.i("Irrlicht", "Error in unpack");
         }
         nativeEnvJ2C(Environment.getExternalStorageDirectory().getAbsolutePath());
-        mGLView = new IrrlichtGLView(this);
+       mGLView = new IrrlichtGLView(this);
         setContentView(mGLView);
         nativeOnCreate();
     }
 
+    public static void playSound(int i){
+    	exploreSound.play();
+    }
+    
     @Override
     protected void onPause() {
         super.onPause();

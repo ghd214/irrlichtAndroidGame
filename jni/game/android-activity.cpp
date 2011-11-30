@@ -1,6 +1,7 @@
 #include <jni.h>
 #include <android/log.h>
 #include <irrlicht.h>
+#include <misc.h>
 
 using namespace irr;
 
@@ -19,13 +20,14 @@ int  gWindowWidth  = 320;
 int  gWindowHeight = 480;
 int  gAppAlive   = 1;
 bool  OPEN_WEBPAGE_ON_EXIT = 0;
-stringc gSdCardPath = "/sdcard/";
+stringc gSdCardPath = "/sdcard/Irrlicht/media/";
 IrrlichtDevice *device = NULL;
 IVideoDriver* driver = NULL;
 int counter = 0;
-
-
-
+ 
+static JavaVM* gVM;
+jclass jNativeCls;
+jmethodID jPlaySoundMethod;
 
 /* For JNI: C++ compiler need this */
 extern "C" {
@@ -33,7 +35,7 @@ extern "C" {
 /** Activity onCreate */
 void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeOnCreate( JNIEnv*  env )
 {
-    
+
 }
 
 /** Activity onPause */
@@ -56,6 +58,26 @@ void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeOnDestroy( JNIEnv*  env )
 
 void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeInitGL( JNIEnv*  env )
 {
+
+    env->GetJavaVM(&gVM);
+
+    jNativeCls = (env)->FindClass("IrrlichtTest");
+
+    if ( jNativeCls == 0 ) {
+//        jni_printf("Unable to find class: %s", CB_CLASS);
+        return;
+    }
+
+    jPlaySoundMethod = (env)->GetStaticMethodID(jNativeCls
+            , "playSound" 
+            , "(I)V");
+
+    if ( jPlaySoundMethod == 0 ) {
+//        jni_printf("Unable to find method OnImageUpdate(char[]): %s", CB_CLASS);
+        return;
+    }
+
+
     importGLInit();
     device = createDevice( video::EDT_OGLES1, dimension2d<u32>(gWindowWidth, gWindowHeight), 16, false, false, false, 0);
     driver = device->getVideoDriver();
@@ -133,6 +155,7 @@ void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeEnvJ2C(JNIEnv*  env, jobje
     gSdCardPath = msg;
     __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "not handled %s", gSdCardPath.c_str());
     env->ReleaseStringUTFChars(jsdcardPath,msg);
+  
 }
 
 void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeDrawIteration( JNIEnv*  env ) 
@@ -140,4 +163,36 @@ void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeDrawIteration( JNIEnv*  en
     nativeDrawIteration();   
 }
 
+
+}// extern "C"
+
+/*
+void setMusic(char* filename){
+
+   JNIEnv *env;
+
+   if(!gVM){
+       __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "gVM ==NULL %s", filename);   
+       return;
+   }
+
+   (gVM)->AttachCurrentThread(&env, NULL);
+            
+   if ( jNativeCls == 0) {
+       return;
+   }
+
+   if( jPlaySoundMethod == 0) {
+       return;
+   }
+
+   (env)->CallStaticVoidMethod(jNativeCls
+            , jPlaySoundMethod
+            , (jint) 0);
+
+//   (env)->DeleteLocalRef(env,jSound);  
 }
+*/
+
+
+

@@ -8,7 +8,7 @@
 //extern ISoundEngine *sengine;
 
 //ISound *sMusic = NULL;
-
+/*
 void stopMusic()
 {
 //    if (sMusic)
@@ -23,7 +23,7 @@ void setMusic(char *fileName)
 //    stopMusic();
 //    sMusic = sengine->play2D(fileName, true, false, true, ESM_NO_STREAMING);
 }
-
+*/
 int randSign()
 {
     int i = rand()%2;

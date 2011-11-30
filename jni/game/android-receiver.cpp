@@ -169,7 +169,7 @@ bool AndroidEventReceiver::OnEvent(const SEvent& e)
                 createRabbit();
                 addCarrotDisplay();
 */                
-         //       setMusic("media/ingame_loop.ogg");
+              //  setMusic("media/ingame_loop.ogg");
             }
             else if (state == IN_ENDSCREEN)
             {

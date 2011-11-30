@@ -33,7 +33,7 @@ bool rabbitFallen;      // falling to death :-(
 
 void createRabbit()
 {
-    rabbitNode = smgr->addAnimatedMeshSceneNode(smgr->getMesh("sdcard/Irrlicht/media/rabbit.b3d"));
+    rabbitNode = smgr->addAnimatedMeshSceneNode(smgr->getMesh("/sdcard/Irrlicht/media/rabbit.b3d"));
     rabbitNode->setRotation(core::vector3df(90,0,0));
     //f32 s = 2.0;
     //rabbitNode->setScale(core::vector3df(s,s,s));
@@ -65,8 +65,11 @@ void createRabbit()
 	
 	// adjust some material settings
     nodePS->setMaterialFlag(video::EMF_LIGHTING, false);
-	nodePS->setMaterialTexture(0, driver->getTexture("sdcard/Irrlicht/media/star.png"));
-	nodePS->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR);
+    nodePS->setMaterialFlag(video::EMF_ZWRITE_ENABLE, false);
+	nodePS->setMaterialTexture(0, driver->getTexture("/sdcard/Irrlicht/media/star.png"));
+	//nodePS->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR);
+    nodePS->setMaterialType(video::EMT_TRANSPARENT_VERTEX_ALPHA);
+
 }
 
 void updateRabbit(double dt)

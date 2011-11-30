@@ -1,4 +1,4 @@
-package com.ellismarkov.irrlicht;
+package com.strom.irrlicht.rabbit;
 
 import java.io.IOException;
 
