@@ -45,7 +45,7 @@ void createRabbit()
     rabbitFallen = false;
     rabbitNode->setPosition(core::vector3df(0,startHeight,0));
     rabbitNode->updateAbsolutePosition();
-    
+   /* 
     nodePS = smgr->addParticleSystemSceneNode(
         false, rabbitNode, -1, core::vector3df(1,1,2)
         );
@@ -69,7 +69,7 @@ void createRabbit()
 	nodePS->setMaterialTexture(0, driver->getTexture("/sdcard/Irrlicht/media/star.png"));
 	//nodePS->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR);
     nodePS->setMaterialType(video::EMT_TRANSPARENT_VERTEX_ALPHA);
-
+*/
 }
 
 void updateRabbit(double dt)

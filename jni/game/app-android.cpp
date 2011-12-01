@@ -663,7 +663,8 @@ void nativeDrawIterationRabbit(){
                      __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "New Game");
                      createRabbit();
                      addCarrotDisplay();
- 
+
+                     setMusic("media/ingame_loop.ogg");
                 }
                 else if (state == IN_GAME)
                 {

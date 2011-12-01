@@ -61,8 +61,8 @@ void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeInitGL( JNIEnv*  env )
 {
 
     env->GetJavaVM(&gVM);
-
-    jNativeCls = (env)->FindClass("IrrlichtTest");
+//com.strom.irrlicht.rabbit.IrrlichtTest
+    jNativeCls = (env)->FindClass("com/strom/irrlicht/rabbit/IrrlichtTest");
 
     if ( jNativeCls == 0 ) {
 //        jni_printf("Unable to find class: %s", CB_CLASS);
@@ -180,10 +180,12 @@ void setMusic(char* filename){
    (gVM)->AttachCurrentThread(&env, NULL);
             
    if ( jNativeCls == 0) {
+       __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "jNativeCls == 0 %s", filename);   
        return;
    }
 
    if( jPlaySoundMethod == 0) {
+       __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "jPlaySoundMethod == 0 %s", filename);   
        return;
    }
 
@@ -191,6 +193,7 @@ void setMusic(char* filename){
             , jPlaySoundMethod
             , (jint) 0);
 
+       __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "setMusic end%s", filename);   
 //   (env)->DeleteLocalRef(env,jSound);  
 }
 
