@@ -33,30 +33,31 @@ jmethodID jPlaySoundMethod;
 extern "C" {
 
 /** Activity onCreate */
-void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeOnCreate( JNIEnv*  env )
+//com/strom/irrlicht/rabbit
+void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeOnCreate( JNIEnv*  env )
 {
 
 }
 
 /** Activity onPause */
-void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeOnPause( JNIEnv*  env )
+void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeOnPause( JNIEnv*  env )
 {
 
 }
 
 /** Activity onResume */
-void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeOnResume( JNIEnv*  env )
+void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeOnResume( JNIEnv*  env )
 {
 	counter = 0;
 }
 
 /** Activity onDestroy */
-void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeOnDestroy( JNIEnv*  env )
+void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeOnDestroy( JNIEnv*  env )
 {
     importGLDeinit();
 }
 
-void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeInitGL( JNIEnv*  env )
+void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeInitGL( JNIEnv*  env )
 {
 
     env->GetJavaVM(&gVM);
@@ -91,7 +92,7 @@ void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeInitGL( JNIEnv*  env )
         __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "No driver");
 }
 
-void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeResize( JNIEnv*  env, jobject  thiz, jint w, jint h )
+void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeResize( JNIEnv*  env, jobject  thiz, jint w, jint h )
 {
     __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "resize w=%d h=%d", w, h);
     gWindowWidth  = w;
@@ -102,7 +103,7 @@ void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeResize( JNIEnv*  env, jobj
     device->getVideoDriver()->OnResize(size);
 }
 
-void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeSendEvent( JNIEnv*  env, jobject defaultObj, jobject event) 
+void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeSendEvent( JNIEnv*  env, jobject defaultObj, jobject event) 
 {
     jclass classEvent = env->GetObjectClass(event);
     jfieldID fieldAction = env->GetFieldID(classEvent, "mAction", "I");
@@ -137,7 +138,7 @@ void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeSendEvent( JNIEnv*  env, j
     }    
 }
 
-void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeGetStatus(JNIEnv*  env, jobject defaultObj, jobject status) 
+void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeGetStatus(JNIEnv*  env, jobject defaultObj, jobject status) 
 {
     if (gAppAlive==7) {
     	gAppAlive   = 1;
@@ -148,7 +149,7 @@ void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeGetStatus(JNIEnv*  env, jo
 }
 
 
-void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeEnvJ2C(JNIEnv*  env, jobject defaultObj, jstring jsdcardPath) 
+void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeEnvJ2C(JNIEnv*  env, jobject defaultObj, jstring jsdcardPath) 
 {
     char ligne[1024+1];
     const char *msg = env->GetStringUTFChars(jsdcardPath,0);
@@ -158,7 +159,7 @@ void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeEnvJ2C(JNIEnv*  env, jobje
   
 }
 
-void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeDrawIteration( JNIEnv*  env ) 
+void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeDrawIteration( JNIEnv*  env ) 
 {
     nativeDrawIteration();   
 }
@@ -166,7 +167,7 @@ void Java_com_ellismarkov_irrlicht_IrrlichtTest_nativeDrawIteration( JNIEnv*  en
 
 }// extern "C"
 
-/*
+
 void setMusic(char* filename){
 
    JNIEnv *env;
@@ -192,7 +193,7 @@ void setMusic(char* filename){
 
 //   (env)->DeleteLocalRef(env,jSound);  
 }
-*/
+
 
 
 
