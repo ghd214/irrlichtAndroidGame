@@ -233,10 +233,8 @@ void startScreen()
 //    device->setEventReceiver(&eventReceiver);
     
     resetPlatforms();
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "startScreen()1");
     startBlinkText = blinkMessage(L"< press to play >", screenHH(), 0);
     
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "startScreen()2");
     smgr->getActiveCamera()->setPosition(firstCameraPosition+core::vector3df(0,startHeight,0));
     smgr->getActiveCamera()->setTarget(firstCameraTarget+core::vector3df(0,startHeight,0));
     
