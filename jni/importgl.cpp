@@ -150,7 +150,7 @@ int importGLInit()
     IMPORT_FUNC(glVertexPointer);
     IMPORT_FUNC(glViewport);
 
-    //ghd
+/*    //ghd
    IMPORT_FUNC(glActiveTexture);
             IMPORT_FUNC(glAttachShader);
             IMPORT_FUNC(glBindAttribLocation);
@@ -290,7 +290,7 @@ int importGLInit()
             IMPORT_FUNC(glViewport);
 
     //ghd
-
+*/
 
 #endif /* DISABLE_IMPORTGL */
 

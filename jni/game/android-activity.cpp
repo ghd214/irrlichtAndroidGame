@@ -2,6 +2,7 @@
 #include <android/log.h>
 #include <irrlicht.h>
 #include <misc.h>
+#include <importgl.h>
 
 using namespace irr;
 
@@ -11,8 +12,8 @@ using namespace video;
 using namespace io;
 using namespace gui;
 
-int importGLInit();
-void importGLDeinit();
+extern int importGLInit();
+extern void importGLDeinit();
 void nativeDrawIteration();
 
 // global variables
@@ -20,7 +21,7 @@ int  gWindowWidth  = 320;
 int  gWindowHeight = 480;
 int  gAppAlive   = 1;
 bool  OPEN_WEBPAGE_ON_EXIT = 0;
-stringc gSdCardPath = "/sdcard/Irrlicht/media/";
+stringc gSdCardPath = "/sdcard/Irrlicht/";
 IrrlichtDevice *device = NULL;
 IVideoDriver* driver = NULL;
 int counter = 0;
@@ -153,7 +154,7 @@ void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeEnvJ2C(JNIEnv*  env, jobj
 {
     char ligne[1024+1];
     const char *msg = env->GetStringUTFChars(jsdcardPath,0);
-    gSdCardPath = msg;
+  //  gSdCardPath = msg;
     __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "not handled %s", gSdCardPath.c_str());
     env->ReleaseStringUTFChars(jsdcardPath,msg);
   

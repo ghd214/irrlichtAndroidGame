@@ -51,11 +51,11 @@ extern "C" {
  * Should be called once on application initialization.
  * Returns non-zero on success and 0 on failure.
  */
-extern int importGLInit();
+int importGLInit();
 
 /* Frees the handle to egl & gl functions library.
  */
-extern void importGLDeinit();
+void importGLDeinit();
 
 
 #ifndef IMPORTGL_API
