@@ -100,7 +100,7 @@ int screenHW()
 
 int screenHH()
 {
-    return (driver->getScreenSize()/2).Height;
+    return (driver->getScreenSize()/2).Height;// "/" operator reload
 }
 
 gui::IGUIStaticText *staticText(core::stringw str, int x, int y, int flag, char *fontFile)
@@ -153,7 +153,7 @@ Text *normalMessage(core::stringw str, int y, char *fontFile)
     }
     
     core::dimension2d<u32> dim = font->getDimension(str.c_str());
-    core::rect<s32> rec = core::rect<s32>(screenHW()-dim.Width/2,y-dim.Height/2,
+    core::rect<s32> rec = core::rect<s32>(screenHW()-dim.Width/2 - 5,y-dim.Height/2,
         screenHW()+dim.Width/2,y+dim.Height/2);
     
     gui::IGUIStaticText *itext = guienv->addStaticText(str.c_str(), rec, false,false);
