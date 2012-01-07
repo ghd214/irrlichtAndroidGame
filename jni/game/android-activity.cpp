@@ -1,7 +1,10 @@
 #include <jni.h>
 #include <android/log.h>
+#include <sys/types.h>
+#include <android/asset_manager_jni.h>
 #include <irrlicht.h>
 #include <misc.h>
+#include <android-native-audio.h>
 
 using namespace irr;
 
@@ -24,7 +27,8 @@ stringc gSdCardPath = "/sdcard/Irrlicht/media/";
 IrrlichtDevice *device = NULL;
 IVideoDriver* driver = NULL;
 int counter = 0;
- 
+AAssetManager* mgr = NULL;
+   
 static JavaVM* gVM;
 jclass jNativeCls;
 jmethodID jPlaySoundMethod;
@@ -36,13 +40,16 @@ extern "C" {
 //com/strom/irrlicht/rabbit
 void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeOnCreate( JNIEnv*  env )
 {
-
+    createEngine();
+    createBufferQueueAudioPlayer(); 
+    createAssetAudioPlayer("sounds/backgroundmusic.mp3");
+    setPlayingAssetAudioPlayer(true);
 }
 
 /** Activity onPause */
 void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeOnPause( JNIEnv*  env )
 {
-
+    setPlayingAssetAudioPlayer(false);
 }
 
 /** Activity onResume */
@@ -54,6 +61,7 @@ void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeOnResume( JNIEnv*  env )
 /** Activity onDestroy */
 void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeOnDestroy( JNIEnv*  env )
 {
+    shutdown();
     importGLDeinit();
 }
 
@@ -159,15 +167,22 @@ void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeEnvJ2C(JNIEnv*  env, jobj
   
 }
 
+void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeCreateAssetManager( JNIEnv* env, jclass clazz,
+        jobject assetManager)
+{
+    mgr = AAssetManager_fromJava(env, assetManager);
+    assert(NULL != mgr);
+}
+
 void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeDrawIteration( JNIEnv*  env ) 
 {
     nativeDrawIteration();   
-}
 
+}
 
 }// extern "C"
 
-
+// c callback java
 void setMusic(char* filename){
 
    JNIEnv *env;
