@@ -6,7 +6,10 @@
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
 using namespace irr;
+
+#ifdef __cplusplus
 extern "C" {
+#endif
 
 void bqPlayerCallback(SLAndroidSimpleBufferQueueItf bq, void *context);
 void bqRecorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context);
@@ -21,8 +24,10 @@ void setPlayingAssetAudioPlayer(bool isPlaying);
 bool createAudioRecorder();
 void startRecording();
 void shutdown();
- 
+
+#ifdef __cplusplus 
 } // extern "C"
- 
-#endif
+#endif 
+
+#endif //__ANDROID_NATIVE_AUDIO_H
 

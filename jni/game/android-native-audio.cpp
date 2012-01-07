@@ -98,7 +98,9 @@ static short *nextBuffer;
 static unsigned nextSize;
 static int nextCount;
 
+#ifdef __cplusplus
 extern "C" {
+#endif
 
 // synthesize a mono sawtooth wave and place it into a buffer (called automatically on load)
 __attribute__((constructor)) static void onDlOpen(void)
@@ -603,4 +605,7 @@ void shutdown()
     }
 
 }
+
+#ifdef __cplusplus
 } // extern "C"
+#endif
