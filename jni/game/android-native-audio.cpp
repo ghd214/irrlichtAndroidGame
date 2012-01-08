@@ -48,7 +48,7 @@ static const char android[] =
 #include "android_clip.h"
 ;
 
-extern AAssetManager* mgr;
+extern AAssetManager* assetManager;
 
 // engine interfaces
 static SLObjectItf engineObject = NULL;
@@ -402,7 +402,7 @@ bool createAssetAudioPlayer(char* filename) // stringc compile error
     // use asset manager to open asset by filename
 //    AAssetManager* mgr = AAssetManager_fromJava(env, assetManager);
 //    assert(NULL != mgr);
-    AAsset* asset = AAssetManager_open(mgr, (const char *) filename, AASSET_MODE_UNKNOWN);
+    AAsset* asset = AAssetManager_open(assetManager, (const char *) filename, AASSET_MODE_UNKNOWN);
 
     // release the Java string and UTF-8
 //   (*env)->ReleaseStringUTFChars(env, filename, utf8);
