@@ -42,7 +42,7 @@ jmethodID jPlaySoundMethod;
 /* For JNI: C++ compiler need this */
 extern "C" {
 
-// this is called before onCreate
+// this is called before nativeOnCreate
 void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeCreateAssetManager( JNIEnv* env, jclass clazz,
         jobject assetManagerTemp)
 {
@@ -81,15 +81,16 @@ void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeOnDestroy( JNIEnv*  env )
     importGLDeinit();
 }
 
+// this method is called by onSurfaceCreated()
 void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeInitGL( JNIEnv*  env )
 {
-
+    // this gVM is used for other.
     env->GetJavaVM(&gVM);
-//com.strom.irrlicht.rabbit.IrrlichtTest
+    //com.strom.irrlicht.rabbit.IrrlichtTest
     jNativeCls = (env)->FindClass("com/strom/irrlicht/rabbit/IrrlichtTest");
 
     if ( jNativeCls == 0 ) {
-//        jni_printf("Unable to find class: %s", CB_CLASS);
+    //  jni_printf("Unable to find class: %s", CB_CLASS);
         return;
     }
 
@@ -98,10 +99,9 @@ void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeInitGL( JNIEnv*  env )
             , "(I)V");
 
     if ( jPlaySoundMethod == 0 ) {
-//        jni_printf("Unable to find method OnImageUpdate(char[]): %s", CB_CLASS);
+    //  jni_printf("Unable to find method OnImageUpdate(char[]): %s", CB_CLASS);
         return;
     }
-
 
     importGLInit();
     device = createDevice( video::EDT_OGLES1, dimension2d<u32>(gWindowWidth, gWindowHeight), 16, false, false, false, 0);
@@ -125,6 +125,21 @@ void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeResize( JNIEnv*  env, job
     size.Width = w;
     size.Height = h; 
     device->getVideoDriver()->OnResize(size);
+}
+
+void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeSendSensorEvent( JNIEnv* env, jobject defaultObj, jfloatArray floatArr)
+{
+    jfloat buf[2];
+    //////////////////////////////////////////////////
+    // this is important differences between c and c++.
+    // C (*env)->GetFloatArrayRegion(env, floatArr, 0, 2, buf);
+    // C++ env->GetFloatArrayRegion(floatArr, 0, 2, buf);
+    //
+    env->GetFloatArrayRegion(floatArr, 0, 2, buf);
+    
+    LOGI("buf[0] == %d", buf[0]);
+    LOGI("buf[1] == %d", buf[1]);
+    LOGI("buf[2] == %d", buf[2]);
 }
 
 void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeSendEvent( JNIEnv*  env, jobject defaultObj, jobject event) 
@@ -187,7 +202,6 @@ void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeDrawIteration( JNIEnv*  e
 {
     sensorProcess();
     nativeDrawIteration();   
-
 }
 
 }// extern "C"
