@@ -133,24 +133,29 @@ void initIrrFile() {
 	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "initIrrFile1");
 	smgr = device->getSceneManager();
 
-	smgr->loadScene("/sdcard/Irrlicht/example.irr");
+	smgr->loadScene("sdcard/Irrlicht/ghdOne.irr");
 
-	scene::ICameraSceneNode * camera = smgr->addCameraSceneNodeFPS(0, 50.f,
-			0.1f);
+	scene::ICameraSceneNode * camera = smgr->addCameraSceneNodeFPS(0, 50.0f
+			,0.1f);
 
 	scene::IMetaTriangleSelector * meta = smgr->createMetaTriangleSelector();
 
 	core::array<scene::ISceneNode *> nodes;
 	smgr->getSceneNodesFromType(scene::ESNT_ANY, nodes); // Find all nodes
 
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "initIrrFile2");
+	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "nodes.size === %d",nodes.size());
+    scene::ISceneNode * rootNode = nodes[1];
 	for (u32 i = 0; i < nodes.size(); ++i) {
 		scene::ISceneNode * node = nodes[i];
 		scene::ITriangleSelector * selector = 0;
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "initIrrFile3");
+        
+	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "node.name ==%s",node->getName());
+	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "node.position x== %d y== %d z == %d",node->getPosition().X,
+                node->getPosition().Y, node->getPosition().Z);
 		switch (node->getType()) {
 		case scene::ESNT_CUBE:
 		case scene::ESNT_ANIMATED_MESH:
+		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "ESNT_CUBE/ ESNT_ANIMATED_MESH");
 			// Because the selector won't animate with the mesh,
 			// and is only being used for camera collision, we'll just use an approximate
 			// bounding box instead of ((scene::IAnimatedMeshSceneNode*)node)->getMesh(0)
@@ -159,22 +164,26 @@ void initIrrFile() {
 
 		case scene::ESNT_MESH:
 		case scene::ESNT_SPHERE: // Derived from IMeshSceneNode
+		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "ESNT_MESH/ ESNT_SPHERE");
 			selector = smgr->createTriangleSelector(
 					((scene::IMeshSceneNode*) node)->getMesh(), node);
 			break;
 
 		case scene::ESNT_TERRAIN:
+		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "ESNT_SPHERE");
 			selector = smgr->createTerrainTriangleSelector(
 					(scene::ITerrainSceneNode*) node);
 			break;
 
 		case scene::ESNT_OCTREE:
+		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "ESNT_OCTREE");
 			selector = smgr->createOctreeTriangleSelector(
 					((scene::IMeshSceneNode*) node)->getMesh(), node);
 			break;
 
 		default:
 			// Don't create a selector for this node type
+		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "Don't create a selector for this node type");
 			break;
 		}
 
@@ -187,22 +196,27 @@ void initIrrFile() {
 	}
 
 	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "initIrrFile4");
-	scene::ISceneNodeAnimator* anim = smgr->createCollisionResponseAnimator(
-			meta, camera, core::vector3df(5, 5, 5), core::vector3df(0, 0, 0));
-	meta->drop(); // I'm done with the meta selector now
+//	scene::ISceneNodeAnimator* anim = smgr->createCollisionResponseAnimator(
+//			meta, camera, core::vector3df(5, 5, 5), core::vector3df(0, 0, 0));
+//	meta->drop(); // I'm done with the meta selector now
+
+    scene::ISceneNodeAnimator* anim = 
+                    smgr->createFlyCircleAnimator(core::vector3df(0,0,0), 300 );
 
 	camera->addAnimator(anim);
 	anim->drop(); // I'm done with the animator now
 
-	// And set the camera position so that it doesn't start off stuck in the geometry
-	camera->setPosition(core::vector3df(0.f, 20.f, 0.f));
 
+	// And set the camera position so that it doesn't start off stuck in the geometry
+	camera->setPosition(core::vector3df( 0.0f, 10.0f, 1.0f));
+    //camera->setRotation(core::vector3df( 0.0f, 90.0f, 0.0f));
+    // camera->setTarget(rootNode->getPosition());
 	// Point the camera at the cube node, by finding the first node of type ESNT_CUBE
-	scene::ISceneNode * cube = smgr->getSceneNodeFromType(scene::ESNT_CUBE);
+/*	scene::ISceneNode * cube = smgr->getSceneNodeFromType(scene::ESNT_CUBE);
 	if (cube)
 		camera->setTarget(cube->getAbsolutePosition());
-
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "initIrrFile5");
+*/
+	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "");
 
 }
 
@@ -340,7 +354,7 @@ void initSydney() {
 		// with animation
 		 nodeSydney->setMD2Animation(scene::EMAT_RUN);
 
-		stringc sydneyTextureFilename = "sdcard/Irrlicht/sydney.bmp";
+		stringc sydneyTextureFilename = "/Irrlicht/sydney.bmp";
 
 		nodeSydney->setMaterialTexture(0, driver->getTexture((gSdCardPath
 				+ sydneyTextureFilename).c_str()));
@@ -447,6 +461,7 @@ void natvieDrawIterationIrrFile() {
 	}
 
 	driver->beginScene(true, true, SColor(255, 0, 0, 0));
+//	driver->beginScene(true, true, SColor(0,200,200,200));
 	smgr->drawAll();
 	driver->endScene();
 
@@ -480,7 +495,7 @@ void nativeDrawIterationSydney() {
 	counter++;
 
 	int fps = driver->getFPS();
-	 __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "fps=%d", fps);
+	 //__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "fps=%d", fps);
 
 }
 
@@ -559,6 +574,8 @@ void initRabbit(){
 	guienv = device->getGUIEnvironment();
     timer = device->getTimer();
 
+    smgr->loadScene("sdcard/Irrlicht/ghdOne.irr");
+
     camera = smgr->addCameraSceneNodeFPS(NULL, 0,0);                                            
     
     camera->setFOV(M_PI/2.0);
@@ -568,20 +585,16 @@ void initRabbit(){
     video::SLight &slight = light->getLightData();
     slight.AmbientColor = video::SColorf(0.8,0.8,0.8,0.8);
     
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "initRabit2");
     preloadStuff();
     
 	// Then create the event receiver, giving it that context structure.
 	receiver = new AndroidEventReceiver(context);
 
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "initRabbit5");
 	// And tell the device to use our custom event receiver.
 	device->setEventReceiver(receiver);
 
-    __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "initRabbit3");
     startScreen();
     
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "initRabbit4");
     time_start = timer->getTime();
     
     srand(time_start);
@@ -665,6 +678,7 @@ void nativeDrawIterationRabbit(){
                      addCarrotDisplay();
 
                      setMusic("media/ingame_loop.ogg");
+
                 }
                 else if (state == IN_GAME)
                 {
@@ -744,7 +758,7 @@ void nativeDrawIteration() {
 	//	if(gAppAlive == 3){
 	//		nativeDrawIterationIrr();
 	//	}else if(gAppAlive ==1){
-//	nativeDrawIterationSydney();
+	nativeDrawIterationSydney();
 	//	}else if(gAppAlive ==5){
 //			nativeDrawIterationQuake();
 	//	}else if(gAppAlive ==2){
@@ -752,7 +766,7 @@ void nativeDrawIteration() {
 	//	}
 
 
-	//	natvieDrawIterationIrrFile();
-    nativeDrawIterationRabbit();
+//		natvieDrawIterationIrrFile();
+   // nativeDrawIterationRabbit();
 }
 
