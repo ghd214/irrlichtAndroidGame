@@ -3,6 +3,9 @@
 #include <vector>
 #include <android/log.h>
 
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "android-activity", __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "android-activity", __VA_ARGS__))
+
 extern IrrlichtDevice *device;
 extern video::IVideoDriver *driver;
 extern gui::IGUIEnvironment *guienv;
@@ -66,8 +69,7 @@ void removeText(Text *text)
             return;
         }
     }
-   // printf("Warning: removeText: text not found.\n");
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "Warning: removeText: text not found.\n");
+	LOGI( "Warning: removeText: text not found.\n");
 }
 
 void removeAllTimedTexts()
@@ -110,7 +112,7 @@ gui::IGUIStaticText *staticText(core::stringw str, int x, int y, int flag, char 
     if (!font)
     {
     //    printf("Error, could not load font: %s\n", fontFile);
-	    __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "WError, could not load font: %s\n", fontFile);
+	    LOGI( "WError, could not load font: %s\n", fontFile);
         return NULL;
     }
     
@@ -131,8 +133,7 @@ gui::IGUIStaticText *staticText(core::stringw str, int x, int y, int flag, char 
     }
     else
     {
-        //printf("Error: staticText: invalid flag (%i)\n", flag);
-	    __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "Error: staticText: invalid flag (%i)\n", flag);
+	    LOGI( "Error: staticText: invalid flag (%i)\n", flag);
     }
     
     gui::IGUIStaticText *text = guienv->addStaticText(str.c_str(), rec, false,false);
@@ -147,8 +148,7 @@ Text *normalMessage(core::stringw str, int y, char *fontFile)
     gui::IGUIFont *font = guienv->getFont(fontFile);
     if (!font)
     {
-        //printf("Error: font not found.\n");
-	    __android_log_print(ANDROID_LOG_INFO, "Irrlicht","Error: font not found.\n");
+	    LOGI("Error: font not found.\n");
         return NULL;
     }
     

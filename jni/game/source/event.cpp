@@ -14,6 +14,9 @@
 
 #include <android/log.h>
 
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "android-activity", __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "android-activity", __VA_ARGS__))
+
 #define SCORE_FILE "score.dat"
 
 using namespace irr;
@@ -165,7 +168,7 @@ public:
                 removeText(startBlinkText);
                 
                 state = IN_GAME;
-                printf("NEW GAME %i\n", rand());
+                LOGI("NEW GAME %i\n", rand());
                 createRabbit();
                 addCarrotDisplay();
                 
@@ -173,7 +176,7 @@ public:
             }
             else if (state == IN_ENDSCREEN)
             {
-                printf("START SCREEN %i\n", rand());
+                LOGI("START SCREEN %i\n", rand());
                 
                 tEndCongrats->remove();
                 tEndScore->remove();
@@ -204,7 +207,7 @@ int getHighScore()
             fclose(f);
             return score;
         //}
-        //printf("Warning: score file corrupted?\n");
+        //LOGI("Warning: score file corrupted?\n");
         //fclose(f);
     }
     return 0;
@@ -220,7 +223,7 @@ void saveHighScore(int score)
     }
     else
     {
-        printf("Warning: error saving high score.\n");
+        LOGI("Warning: error saving high score.\n");
     }
 }
 
@@ -228,7 +231,7 @@ extern f32 startHeight;
 
 void startScreen()
 {
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "startScreen()");
+	LOGI(  "startScreen()");
     state = IN_STARTSCREEN;
 //    device->setEventReceiver(&eventReceiver);
     

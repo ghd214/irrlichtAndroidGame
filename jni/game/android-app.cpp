@@ -20,6 +20,9 @@
 #include "text.h"
 #include "misc.h"
 
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "android-app", __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "android-app", __VA_ARGS__))
+
 using namespace irr;
 
 using namespace os;
@@ -73,13 +76,11 @@ void initQuake() {
 
 	smgr = device->getSceneManager();
 
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "getSceneManager r=%d",
-			smgr);
+	LOGI("getSceneManager r=%d", smgr);
 
 	guienv = device->getGUIEnvironment();
 
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "getGUIEnvironment r=%d",
-			guienv);
+	LOGI("getGUIEnvironment r=%d",guienv);
 
 	//为什么这种方法，增加地图无效呢
 	stringc quakeMapFilename = "/Irrlicht/map-20kdm2.pk3";
@@ -90,17 +91,17 @@ void initQuake() {
 	//mesh = smgr->getMesh("/sdcard/Irrlicht/room.3ds");
 
 	if (mesh) {
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "mesh available");
+		LOGI("mesh available");
 		node = smgr->addOctreeSceneNode(mesh->getMesh(0), 0, -1, 1024);
 	} else {
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "mesh not available");
+		LOGI("mesh not available");
 	}
 
 	if (node) {
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "node available");
+		LOGI( "node available");
 		node->setPosition(core::vector3df(-1300, -144, -1249));
 	} else {
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "node not available");
+		LOGI( "node not available");
 	}
 
 	camera = smgr->addCameraSceneNodeFPS();
@@ -130,7 +131,7 @@ void initQuake() {
 
 void initIrrFile() {
 
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "initIrrFile1");
+	LOGI( "initIrrFile1");
 	smgr = device->getSceneManager();
 
 	smgr->loadScene("sdcard/Irrlicht/ghdOne.irr");
@@ -143,19 +144,19 @@ void initIrrFile() {
 	core::array<scene::ISceneNode *> nodes;
 	smgr->getSceneNodesFromType(scene::ESNT_ANY, nodes); // Find all nodes
 
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "nodes.size === %d",nodes.size());
+	LOGI("nodes.size === %d",nodes.size());
     scene::ISceneNode * rootNode = nodes[1];
 	for (u32 i = 0; i < nodes.size(); ++i) {
 		scene::ISceneNode * node = nodes[i];
 		scene::ITriangleSelector * selector = 0;
         
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "node.name ==%s",node->getName());
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "node.position x== %d y== %d z == %d",node->getPosition().X,
+	LOGI( "node.name ==%s",node->getName());
+	LOGI( "node.position x== %d y== %d z == %d",node->getPosition().X,
                 node->getPosition().Y, node->getPosition().Z);
 		switch (node->getType()) {
 		case scene::ESNT_CUBE:
 		case scene::ESNT_ANIMATED_MESH:
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "ESNT_CUBE/ ESNT_ANIMATED_MESH");
+		LOGI( "ESNT_CUBE/ ESNT_ANIMATED_MESH");
 			// Because the selector won't animate with the mesh,
 			// and is only being used for camera collision, we'll just use an approximate
 			// bounding box instead of ((scene::IAnimatedMeshSceneNode*)node)->getMesh(0)
@@ -164,26 +165,26 @@ void initIrrFile() {
 
 		case scene::ESNT_MESH:
 		case scene::ESNT_SPHERE: // Derived from IMeshSceneNode
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "ESNT_MESH/ ESNT_SPHERE");
+		LOGI( "ESNT_MESH/ ESNT_SPHERE");
 			selector = smgr->createTriangleSelector(
 					((scene::IMeshSceneNode*) node)->getMesh(), node);
 			break;
 
 		case scene::ESNT_TERRAIN:
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "ESNT_SPHERE");
+		LOGI( "ESNT_SPHERE");
 			selector = smgr->createTerrainTriangleSelector(
 					(scene::ITerrainSceneNode*) node);
 			break;
 
 		case scene::ESNT_OCTREE:
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "ESNT_OCTREE");
+		LOGI( "ESNT_OCTREE");
 			selector = smgr->createOctreeTriangleSelector(
 					((scene::IMeshSceneNode*) node)->getMesh(), node);
 			break;
 
 		default:
 			// Don't create a selector for this node type
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "Don't create a selector for this node type");
+		LOGI( "Don't create a selector for this node type");
 			break;
 		}
 
@@ -195,7 +196,7 @@ void initIrrFile() {
 		}
 	}
 
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "initIrrFile4");
+	LOGI( "initIrrFile4");
 //	scene::ISceneNodeAnimator* anim = smgr->createCollisionResponseAnimator(
 //			meta, camera, core::vector3df(5, 5, 5), core::vector3df(0, 0, 0));
 //	meta->drop(); // I'm done with the meta selector now
@@ -216,12 +217,12 @@ void initIrrFile() {
 	if (cube)
 		camera->setTarget(cube->getAbsolutePosition());
 */
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "");
+	LOGI( "");
 
 }
 
 void initSydney() {
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "initSydney");
+	LOGI( "initSydney");
 
 	smgr = device->getSceneManager();
 
@@ -237,7 +238,7 @@ void initSydney() {
 	roomMesh = smgr->getMesh((gSdCardPath + roomFilename).c_str());
 
 	u32 frameCount = mesh->getFrameCount();
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "frameCount = %d",
+	LOGI( "frameCount = %d",
 			frameCount);
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -292,7 +293,7 @@ void initSydney() {
 	//add room
 	if (!roomMesh) {
 		device->drop();
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "cannot getMesh");
+		LOGI( "cannot getMesh");
 		return;
 	} else {
 		//roomNode = smgr->addOctreeSceneNode( roomMesh );
@@ -304,14 +305,14 @@ void initSydney() {
 		stringc roomTextureFilename = "/Irrlicht/wall.jpg";
 		roomNode->setMaterialTexture(0, driver->getTexture((gSdCardPath
 				+ roomTextureFilename).c_str()));
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "add texture");
+		LOGI( "add texture");
 	}
 
 	////////////////////////////////////////////////////////////////////////////
 	// add sydney
 	if (!mesh) {
 		device->drop();
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "cannot getMesh");
+		LOGI( "cannot getMesh");
 		return;
 	} else {
 //		addAnimatedMeshSceneNode (IAnimatedMesh *mesh, ISceneNode *parent=0,
@@ -325,22 +326,22 @@ void initSydney() {
 	}
 	if (nodeSydney) {
 		f32 animationSpeed = nodeSydney->getAnimationSpeed();
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "animationSpeed %f",
+		LOGI( "animationSpeed %f",
 				animationSpeed);
 
 		s32 endFrame = nodeSydney->getEndFrame();
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "endFrame = %d",
+		LOGI( "endFrame = %d",
 				endFrame);
 
 		f32 frameNr = nodeSydney->getFrameNr();
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "frameNr = %f",
+		LOGI( "frameNr = %f",
 				frameNr);
 
 		s32 startFrame = nodeSydney->getStartFrame();
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "startFrmae = %d",
+		LOGI( "startFrmae = %d",
 				startFrame);
 
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht",
+		LOGI(
 				"add texture111111111");
 		nodeSydney->setMaterialFlag(EMF_LIGHTING, false);
     
@@ -358,7 +359,7 @@ void initSydney() {
 
 		nodeSydney->setMaterialTexture(0, driver->getTexture((gSdCardPath
 				+ sydneyTextureFilename).c_str()));
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "add texture");
+		LOGI( "add texture");
 	}
 
 	//smgr->addCameraSceneNodeFPS(0, 0.0f, 0.1f);
@@ -403,13 +404,13 @@ void initIrr() {
 
 	stringc _3dsFilename = "/Irrlicht/room.3ds";
 	mesh = smgr->getMesh((gSdCardPath + _3dsFilename).c_str());
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "mesh: %d", mesh);
+	LOGI( "mesh: %d", mesh);
 
 	// smgr->getMeshManipulator()->makePlanarTextureMapping(mesh->getMesh(0), 0.004f);
 
 	if (!mesh) {
 		device->drop();
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "cannot getMesh");
+		LOGI( "cannot getMesh");
 		return;
 	}
 
@@ -454,7 +455,7 @@ void initIrr() {
 }
 
 void natvieDrawIterationIrrFile() {
-	//__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "natvieDrawIterationIrrFile");
+	//LOGI( "natvieDrawIterationIrrFile");
 	device->run();
 	if (counter == 0) {
 		initIrrFile();
@@ -495,7 +496,7 @@ void nativeDrawIterationSydney() {
 	counter++;
 
 	int fps = driver->getFPS();
-	 //__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "fps=%d", fps);
+	 //LOGI( "fps=%d", fps);
 
 }
 
@@ -520,14 +521,14 @@ void nativeDrawIterationQuake() {
 	counter++;
 
 	int fps = driver->getFPS();
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "fps=%d", fps);
+	LOGI( "fps=%d", fps);
 
 }
 
 void nativeDrawIterationIrr() {
 	device->run();
 	if (counter == 0) {
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "Load irr scene");
+		LOGI( "Load irr scene");
 		initIrr();
 	}
 
@@ -540,14 +541,14 @@ void nativeDrawIterationIrr() {
 	counter++;
 
 	int fps = driver->getFPS();
-	//   __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "fps=%d", fps);
+	//   LOGI( "fps=%d", fps);
 
 }
 
 
 void preloadStuff()
 {
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "preloadStuff");
+	LOGI( "preloadStuff");
     timer->stop();
     //gui::IGUIStaticText *loadText = staticText(L"Loading...", screenHW(),screenHH(), 4, "media/bigfont.xml");
     driver->beginScene(true, true, video::SColor(0,255,255,120));
@@ -568,7 +569,7 @@ void preloadStuff()
 
 void initRabbit(){
     
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "initRabit");
+	LOGI( "initRabit");
 	smgr = device->getSceneManager();
     driver = device->getVideoDriver();
 	guienv = device->getGUIEnvironment();
@@ -604,7 +605,7 @@ void initRabbit(){
 /*	// Then create the event receiver, giving it that context structure.
 	receiver = new AndroidEventReceiver(context);
 
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "initRabbit5");
+	LOGI( "initRabbit5");
 	// And tell the device to use our custom event receiver.
 	device->setEventReceiver(receiver);
 */
@@ -629,7 +630,7 @@ void nativeDrawIterationRabbit(){
     core::stringw windowCaption = L"Run Rabbit RUN!";
 
 	if (counter == 0) {
-		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "Load irr scene");
+		LOGI( "Load irr scene");
         initGameScreen();
 	}
 
@@ -639,10 +640,10 @@ void nativeDrawIterationRabbit(){
 
     //while(device->run())
     {
-//		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "running");
+//		LOGI( "running");
         if (device->isWindowActive())
         {
-//		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "running1");
+//		LOGI( "running1");
             if (timer->isStopped())
             {
                 timer->start();
@@ -654,13 +655,13 @@ void nativeDrawIterationRabbit(){
             if ( (timer->getTime() - time_start >= 1000.0 / 60.0) && device->isWindowActive())
             {
 
-//		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "running2");
+//		LOGI( "running2");
                 dt = (double)(timer->getTime() - time_start) / 1000.0f;
 
                if (state != IN_DEMOSCREEN)
                 {
 
-//		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "running3");
+//		LOGI( "running3");
                     createPlatformUpdate(timer->getTime()); // platform generator
                     updatePlatforms(dt);
                     rotateCarrotIcon();
@@ -673,7 +674,7 @@ void nativeDrawIterationRabbit(){
                 
                     state = IN_GAME;
                     // printf("NEW GAME %i\n", rand());
-                     __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "New Game");
+                     LOGI( "New Game");
                      createRabbit();
                      addCarrotDisplay();
 
@@ -682,7 +683,7 @@ void nativeDrawIterationRabbit(){
                 }
                 else if (state == IN_GAME)
                 {
-//		__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "running4");
+//		LOGI( "running4");
                     updatePlatformDifficulty(dt);
                     updateRabbit(dt);
                     
@@ -703,7 +704,7 @@ void nativeDrawIterationRabbit(){
                     }
                 }
                 else if(state == END_TO_STARTSCREEN){
-                      __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "Start Screen");
+                     LOGI( "Start Screen");
                      tEndCongrats->remove();
                      tEndScore->remove();
                      tEndCarrots->remove();
@@ -758,7 +759,7 @@ void nativeDrawIteration() {
 	//	if(gAppAlive == 3){
 	//		nativeDrawIterationIrr();
 	//	}else if(gAppAlive ==1){
-	nativeDrawIterationSydney();
+//	nativeDrawIterationSydney();
 	//	}else if(gAppAlive ==5){
 //			nativeDrawIterationQuake();
 	//	}else if(gAppAlive ==2){
@@ -766,7 +767,7 @@ void nativeDrawIteration() {
 	//	}
 
 
-//		natvieDrawIterationIrrFile();
+		natvieDrawIterationIrrFile();
    // nativeDrawIterationRabbit();
 }
 

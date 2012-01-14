@@ -7,6 +7,10 @@
 #include "misc.h"
 #include "text.h"
 #include <android/log.h>
+
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "android-activity", __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "android-activity", __VA_ARGS__))
+
 //#include <irrKlang.h>
 
 //using namespace audio;
@@ -38,7 +42,7 @@ f32 maxOffY;
 
 void resetPlatforms()
 {
-	__android_log_print(ANDROID_LOG_INFO, "Irrlicht", "resetPlatforms()");
+	LOGI( "resetPlatforms()");
     removePlatforms();
     startPos = core::vector3df(0,0,300.0);
     endPos = core::vector3df(0,0,-100.0);

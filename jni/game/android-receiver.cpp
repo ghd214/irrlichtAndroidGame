@@ -11,6 +11,9 @@
 #include "misc.h"
 #include "launcher/DeviceSettings.h"
 
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "android-receiver", __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "android-receiver", __VA_ARGS__))
+
 
 extern IrrlichtDevice *device;
 extern scene::ISceneManager *smgr;
@@ -40,12 +43,12 @@ extern bool OPEN_WEBPAGE_ON_EXIT;
 
 bool AndroidEventReceiver::OnEvent(const SEvent& e)
 {
-//    __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "AndroidEventReceiver OnEvent()");
+//    LOGI( "AndroidEventReceiver OnEvent()");
 
 #ifdef IS_DEMO
         if (e.EventType == EET_GUI_EVENT)
         {   
-        __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "AndroidEventReceiver OnEvent()1");
+        LOGI( "AndroidEventReceiver OnEvent()1");
             s32 id = e.GUIEvent.Caller->getID();
             
             switch(e.GUIEvent.EventType)
@@ -69,7 +72,7 @@ bool AndroidEventReceiver::OnEvent(const SEvent& e)
         if (e.KeyInput.Key == KEY_ESCAPE && e.KeyInput.PressedDown)
         {
 #ifdef IS_DEMO
-            __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "AndroidEventReceiver OnEvent()2");
+            LOGI( "AndroidEventReceiver OnEvent()2");
             if (state != IN_DEMOSCREEN)
             {
                 if (state == IN_ENDSCREEN)
@@ -134,7 +137,7 @@ bool AndroidEventReceiver::OnEvent(const SEvent& e)
                 device->closeDevice();
             }
 #else
-            __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "AndroidEventReceiver OnEvent()3");
+            LOGI( "AndroidEventReceiver OnEvent()3");
             device->closeDevice();
 #endif
             return true;
@@ -151,21 +154,21 @@ bool AndroidEventReceiver::OnEvent(const SEvent& e)
             && state != IN_DEMOSCREEN // otherwise this prevents GUI button clicking, for some reason
             )
         {
-    __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "AndroidEventReceiver OnEvent()4");
+    LOGI( "AndroidEventReceiver OnEvent()4");
             if (state == IN_GAME)
             {
-    __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "AndroidEventReceiver OnEvent()5");
+    LOGI( "AndroidEventReceiver OnEvent()5");
                 jumpRabbit();
             }
             else if (state == IN_STARTSCREEN)
             {
                 state = START_TO_GAMESCREEN;
-/*    __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "AndroidEventReceiver OnEvent()6");
+/*    LOGI( "AndroidEventReceiver OnEvent()6");
                 removeText(startBlinkText);
                 
                 state = IN_GAME;
                // printf("NEW GAME %i\n", rand());
-                __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "New Game");
+                LOGI( "New Game");
                 createRabbit();
                 addCarrotDisplay();
                 
@@ -174,11 +177,11 @@ bool AndroidEventReceiver::OnEvent(const SEvent& e)
             }
             else if (state == IN_ENDSCREEN)
             {
-    __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "AndroidEventReceiver OnEvent()7");
+    LOGI( "AndroidEventReceiver OnEvent()7");
               state = END_TO_STARTSCREEN;
               //  printf("START SCREEN %i\n", rand());
 /*                
-                __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "Start Screen");
+                LOGI( "Start Screen");
                 tEndCongrats->remove();
                 tEndScore->remove();
                 tEndCarrots->remove();
@@ -201,15 +204,15 @@ bool AndroidEventReceiver::OnEvent(const SEvent& e)
         s32 id = event.GUIEvent.Caller->getID();
         IGUIEnvironment* env = Context.device->getGUIEnvironment();
 
-        __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "Lolo 2: %d %d %d %d", event.GUIEvent.EventType, EGET_BUTTON_CLICKED, id , GUI_ID_QUIT_BUTTON);
+        LOGI( "Lolo 2: %d %d %d %d", event.GUIEvent.EventType, EGET_BUTTON_CLICKED, id , GUI_ID_QUIT_BUTTON);
         switch(event.GUIEvent.EventType)
         {
             case EGET_BUTTON_CLICKED:
-                __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "Lolo 3");
+                LOGI( "Lolo 3");
                 switch(id)
                 {
                     case GUI_ID_QUIT_BUTTON:
-                        __android_log_print(ANDROID_LOG_INFO, "Irrlicht", "Lolo 4");
+                        LOGI( "Lolo 4");
                         if(gAppAlive ==7){
                         	 gAppAlive = 0;
                         }else{

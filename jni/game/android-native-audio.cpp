@@ -27,7 +27,7 @@
 #include <android-native-audio.h>
 
 // for __android_log_print(ANDROID_LOG_INFO, "YourApp", "formatted message");
-// #include <android/log.h>
+#include <android/log.h>
 
 // for native audio
 //#include <SLES/OpenSLES.h>
@@ -37,6 +37,9 @@
 #include <sys/types.h>
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
+
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "android-native-audio", __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "android-native-audio", __VA_ARGS__))
 
 // pre-recorded sound clips, both are 8 kHz mono 16-bit signed little endian
 
