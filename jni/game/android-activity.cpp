@@ -3,6 +3,9 @@
 #include <sys/types.h>
 #include <android/asset_manager_jni.h>
 #include <irrlicht.h>
+#include "stringaling.h"
+#include "text.h"
+#include "event.h"
 #include <importgl.h>
 #include <misc.h> // for setMusic()
 #include <android-native-audio.h>
@@ -23,21 +26,26 @@ extern int importGLInit();
 extern void importGLDeinit();
 void nativeDrawIteration();
 
-// global variables
-int  gWindowWidth  = 320;
-int  gWindowHeight = 480;
-int  gAppAlive   = 1;
-bool  OPEN_WEBPAGE_ON_EXIT = 0;
-stringc gSdCardPath = "/sdcard/Irrlicht/";
-IrrlichtDevice *device = NULL;
-IVideoDriver* driver = NULL;
-int counter = 0;
+extern int  gWindowWidth;
+extern int  gWindowHeight;
+extern int  gAppAlive;
+extern bool  OPEN_WEBPAGE_ON_EXIT;
+extern stringc gSdCardPath;
+extern int counter;
+extern int gameState;
+
+extern IrrlichtDevice *device;
+extern IVideoDriver* driver;
+extern ISceneManager* smgr;
+extern ICameraSceneNode* camera;
 
 AAssetManager* assetManager = NULL;
   
 static JavaVM* gVM;
 jclass jNativeCls;
 jmethodID jPlaySoundMethod;
+
+extern gui::IGUIStaticText *tPosition;
 
 /* For JNI: C++ compiler need this */
 extern "C" {
@@ -72,6 +80,7 @@ void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeOnPause( JNIEnv*  env )
 void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeOnResume( JNIEnv*  env )
 {
 	counter = 0;
+    gameState = IN_STARTSCREEN;
 }
 
 /** Activity onDestroy */
@@ -136,10 +145,27 @@ void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeSendSensorEvent( JNIEnv* 
     // C++ env->GetFloatArrayRegion(floatArr, 0, 2, buf);
     //
     env->GetFloatArrayRegion(floatArr, 0, 2, buf);
-    
-    LOGI("buf[0] == %d", buf[0]);
-    LOGI("buf[1] == %d", buf[1]);
-    LOGI("buf[2] == %d", buf[2]);
+ 
+    float X = buf[0]; 
+    //core::string positionStr = new string(X); 
+ 
+    //tPosition = staticText(stringify(X).c_str(),screenHW(),4,4,"sdcard/Irrlicht/media/bigfont.xml");
+    //LOGI("nativeSendSensorEvent");
+    if(gameState == IN_GAME) {
+        if(smgr != NULL && camera != NULL){
+            core::vector3df nowPosition = smgr->getActiveCamera()->getPosition();
+           // LOGI("nowPosition x == %d", nowPosition.X);
+           // LOGI("nowPosition y == %d", nowPosition.Y);
+           // LOGI("nowPosition z == %d", nowPosition.Z);
+            nowPosition.X = nowPosition.X + (buf[0]/10);
+            nowPosition.Y = nowPosition.Y + (buf[1]/10);
+            nowPosition.Z = nowPosition.Z + (buf[2]/10); 
+           smgr->getActiveCamera()->setPosition(nowPosition); 
+        }
+    }
+   // LOGI("buf[0] == %d", buf[0]);
+   // LOGI("buf[1] == %d", buf[1]);
+   // LOGI("buf[2] == %d", buf[2]);
 }
 
 void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeSendEvent( JNIEnv*  env, jobject defaultObj, jobject event) 
@@ -152,6 +178,8 @@ void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeSendEvent( JNIEnv*  env, 
     // convert Android coord to OpenGL coords
     float x = env->GetFloatField(event, fieldX);
     float y = env->GetFloatField(event, fieldY);
+    LOGI("touch X ===%d", x);
+    LOGI("touch Y ===%d", y);
     SEvent irrevent;
     irrevent.MouseInput.ButtonStates = 0xffffffff;
     irrevent.EventType = irr::EET_MOUSE_INPUT_EVENT;
@@ -200,7 +228,7 @@ void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeEnvJ2C(JNIEnv*  env, jobj
 
 void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeDrawIteration( JNIEnv*  env ) 
 {
-    sensorProcess();
+    //sensorProcess();
     nativeDrawIteration();   
 }
 
@@ -235,7 +263,5 @@ void setMusic(char* filename){
       LOGI("setMusic end%s", filename);   
 //   (env)->DeleteLocalRef(env,jSound);  
 }
-
-
 
 

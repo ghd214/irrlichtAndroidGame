@@ -32,18 +32,23 @@ using namespace video;
 using namespace io;
 using namespace gui;
 
-extern IrrlichtDevice *device;
-extern IVideoDriver *driver;
-extern stringc gSdCardPath;
-extern int counter;
-extern int gAppAlive;
+// global variables
+int  gWindowWidth  = 320;
+int  gWindowHeight = 480;
+int  gAppAlive   = 1;
+bool  OPEN_WEBPAGE_ON_EXIT = 0;
+stringc gSdCardPath = "/sdcard/Irrlicht/";
+int counter = 0;
+int gameState = IN_STARTSCREEN;
+IrrlichtDevice *device = NULL;
+IVideoDriver* driver = NULL;
+ISceneManager* smgr = NULL;
 
 core::vector3df firstCameraPosition = core::vector3df(0,14.0,-20.0);
 core::vector3df firstCameraTarget = core::vector3df(0,0,0);
 
 ITimer *timer;
 IAnimatedMeshSceneNode *nodeSydney;
-ISceneManager* smgr = NULL;
 IGUIEnvironment* guienv = NULL;
 IAnimatedMesh* mesh = NULL;
 IAnimatedMesh* roomMesh = NULL;
@@ -59,6 +64,7 @@ Text *startBlinkText;
 gui::IGUIStaticText *tEndCongrats;
 gui::IGUIStaticText *tEndScore;
 gui::IGUIStaticText *tEndCarrots;
+gui::IGUIStaticText *tPosition;
 Text *textNewHighScore;
 gui::IGUIStaticText *tLastHighScore;
 
@@ -136,7 +142,7 @@ void initIrrFile() {
 
 	smgr->loadScene("sdcard/Irrlicht/ghdOne.irr");
 
-	scene::ICameraSceneNode * camera = smgr->addCameraSceneNodeFPS(0, 50.0f
+	camera = smgr->addCameraSceneNodeFPS(0, 50.0f
 			,0.1f);
 
 	scene::IMetaTriangleSelector * meta = smgr->createMetaTriangleSelector();
@@ -201,11 +207,11 @@ void initIrrFile() {
 //			meta, camera, core::vector3df(5, 5, 5), core::vector3df(0, 0, 0));
 //	meta->drop(); // I'm done with the meta selector now
 
-    scene::ISceneNodeAnimator* anim = 
-                    smgr->createFlyCircleAnimator(core::vector3df(0,0,0), 300 );
+//    scene::ISceneNodeAnimator* anim = 
+//                    smgr->createFlyCircleAnimator(core::vector3df(0,0,0), 300 );
 
-	camera->addAnimator(anim);
-	anim->drop(); // I'm done with the animator now
+//	camera->addAnimator(anim);
+//	anim->drop(); // I'm done with the animator now
 
 
 	// And set the camera position so that it doesn't start off stuck in the geometry
@@ -217,8 +223,7 @@ void initIrrFile() {
 	if (cube)
 		camera->setTarget(cube->getAbsolutePosition());
 */
-	LOGI( "");
-
+    gameState = IN_GAME;
 }
 
 void initSydney() {
