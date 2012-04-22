@@ -27,7 +27,9 @@ ANDROID = importgl.cpp game/android-app.cpp game/android-activity.cpp game/andro
 LOCAL_MODULE := irrlicht
 
 LOCAL_ARM_MODE   := arm 
-LOCAL_CFLAGS := -O3 -DANDROID_NDK -DDISABLE_IMPORTGL -I/home/ghd214/Downloads/openSource/game/irrlicht/RunRabbitIrrlichtAndroid/project/include -I/home/ghd214/Downloads/openSource/game/irrlicht/RunRabbitIrrlichtAndroid/project/jni/game/source/ -I/home/ghd214/Downloads/openSource/game/irrlicht/RunRabbitIrrlichtAndroid/project/jni/
+#LOCAL_CFLAGS := -O3 -DANDROID_NDK -DDISABLE_IMPORTGL -I/home/ghd214/Downloads/openSource/game/irrlicht/RunRabbitIrrlichtAndroid/project/include -I/home/ghd214/Downloads/openSource/game/irrlicht/RunRabbitIrrlichtAndroid/project/jni/game/source/ -I/home/ghd214/Downloads/openSource/game/irrlicht/RunRabbitIrrlichtAndroid/project/jni/
+
+LOCAL_CFLAGS := -O3 -DANDROID_NDK -DDISABLE_IMPORTGL -I../include -I./game/source/ -I./
 
 LOCAL_SRC_FILES := \
      $(ANDROID) \
