@@ -10,7 +10,7 @@
 #include <misc.h> // for setMusic()
 #include <android-native-audio.h>
 #include <android-sensor-manager.h>
-
+#include <math.h> 
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "android-activity", __VA_ARGS__))
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "android-activity", __VA_ARGS__))
 
@@ -40,7 +40,7 @@ extern ISceneManager* smgr;
 extern ICameraSceneNode* camera;
 
 AAssetManager* assetManager = NULL;
-  
+bool sensorFirstIsRunned = false;  
 static JavaVM* gVM;
 jclass jNativeCls;
 jmethodID jPlaySoundMethod;
@@ -81,11 +81,13 @@ void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeOnResume( JNIEnv*  env )
 {
 	counter = 0;
     gameState = IN_STARTSCREEN;
+    sensorFirstIsRunned = false;
 }
 
 /** Activity onDestroy */
 void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeOnDestroy( JNIEnv*  env )
 {
+    sensorFirstIsRunned = false;
     shutdown();
     importGLDeinit();
 }
@@ -139,33 +141,59 @@ void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeResize( JNIEnv*  env, job
 void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeSendSensorEvent( JNIEnv* env, jobject defaultObj, jfloatArray floatArr)
 {
     jfloat buf[2];
+    float prevBuf[2];
     //////////////////////////////////////////////////
     // this is important differences between c and c++.
     // C (*env)->GetFloatArrayRegion(env, floatArr, 0, 2, buf);
     // C++ env->GetFloatArrayRegion(floatArr, 0, 2, buf);
     //
     env->GetFloatArrayRegion(floatArr, 0, 2, buf);
- 
-    float X = buf[0]; 
+
+    if(!sensorFirstIsRunned) {
+        sensorFirstIsRunned = true;
+        LOGI("I want here is running only first time");
+        prevBuf[0] = buf[0];
+        prevBuf[1] = buf[1];
+        prevBuf[2] = buf[2];
+        return;
+    }
+     
+    if(abs(buf[0] - prevBuf[0]) > 1000 || abs(buf[1] - prevBuf[1]) > 1000 
+        || abs(buf[2] - prevBuf[2] > 1000) ){
+        return;
+    }
+    //float X = buf[0]; 
     //core::string positionStr = new string(X); 
  
     //tPosition = staticText(stringify(X).c_str(),screenHW(),4,4,"sdcard/Irrlicht/media/bigfont.xml");
     //LOGI("nativeSendSensorEvent");
     if(gameState == IN_GAME) {
         if(smgr != NULL && camera != NULL){
+           //core::vector3df nowPosition = camera->getPosition();
             core::vector3df nowPosition = smgr->getActiveCamera()->getPosition();
-           // LOGI("nowPosition x == %d", nowPosition.X);
-           // LOGI("nowPosition y == %d", nowPosition.Y);
-           // LOGI("nowPosition z == %d", nowPosition.Z);
-            nowPosition.X = nowPosition.X + (buf[0]/10);
-            nowPosition.Y = nowPosition.Y + (buf[1]/10);
-            nowPosition.Z = nowPosition.Z + (buf[2]/10); 
-           smgr->getActiveCamera()->setPosition(nowPosition); 
+           // LOGI("nowPosition x == %f", nowPosition.X);
+           // LOGI("nowPosition y == %f", nowPosition.Y);
+           // LOGI("nowPosition z == %f", nowPosition.Z);
+//I/android-activity( 2197): nowPosition x == 3456868
+//I/android-activity( 2197): nowPosition y == -2113929216
+//I/android-activity( 2197): nowPosition z == 2130706432
+//I/android-activity( 2197): buf[0] == 2097152000
+//I/android-activity( 2197): buf[1] == 2080374784
+//I/android-activity( 2197): buf[2] == -50331648
+
+            nowPosition.X = nowPosition.X + (buf[0] - prevBuf[0])/10;
+            nowPosition.Y = nowPosition.Y + (buf[1] - prevBuf[1])/10;
+           // nowPosition.Z = nowPosition.Z + (buf[2] - prevBuf[2]); 
+            prevBuf[0] = buf[0];
+            prevBuf[1] = buf[1];
+            prevBuf[2] = buf[2];
+            smgr->getActiveCamera()->setPosition(nowPosition); 
+           // camera->setPosition(nowPosition);
         }
     }
-   // LOGI("buf[0] == %d", buf[0]);
-   // LOGI("buf[1] == %d", buf[1]);
-   // LOGI("buf[2] == %d", buf[2]);
+    LOGI("buf[0] == %f", (buf[0] - prevBuf[0]));
+    LOGI("buf[1] == %f", (buf[1] - prevBuf[1]));
+    LOGI("buf[2] == %f", (buf[2] - prevBuf[2]));
 }
 
 void Java_com_strom_irrlicht_rabbit_IrrlichtTest_nativeSendEvent( JNIEnv*  env, jobject defaultObj, jobject event) 
