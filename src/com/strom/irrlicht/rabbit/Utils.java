@@ -109,7 +109,7 @@ public class Utils {
 	     } 
 	     catch (IOException e) 
 	     { 
-	           Log.e("", "VxCopyAsssetToSdcard dest file doesnt exist.. will copy " + strFileDest );  
+	           Log.e("", "VxCopyAsssetToSdcard dest file doesnt exist.. will copy " + strFileSrc );  
 	     } 
 	  } 
 	  if( bDontCopyIfExistsAndSameSize && ( iSrcFileSize == iDestFileSize)) 

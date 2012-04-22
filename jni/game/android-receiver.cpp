@@ -101,7 +101,7 @@ bool AndroidEventReceiver::OnEvent(const SEvent& e)
                 int bLow = 20;
                 int centreX = screenHW()-25;
                 
-                video::ITexture *tex = driver->getTexture("sdcard/Irrlicht/media/demo.png");
+                video::ITexture *tex = driver->getTexture("sdcard/Irrlicht/demo.png");
                 core::dimension2d<s32> dim = tex->getSize();
                 gui::IGUIImage *img = guienv->addImage(
                     core::rect<s32>(
@@ -114,7 +114,7 @@ bool AndroidEventReceiver::OnEvent(const SEvent& e)
                 guienv->getSkin()->setColor(gui::EGDC_BUTTON_TEXT, video::SColor(255,255,77,0));
                 guienv->getSkin()->setColor(gui::EGDC_3D_FACE, video::SColor(255,255,255,100));
                 guienv->getSkin()->setColor(gui::EGDC_3D_DARK_SHADOW, video::SColor(255,150,150,60));
-                guienv->getSkin()->setFont(guienv->getFont("sdcard/Irrlicht/media/blinkfont.xml"));
+                guienv->getSkin()->setFont(guienv->getFont("sdcard/Irrlicht/blinkfont.xml"));
                 
                 device->getGUIEnvironment()->addButton(
                     core::rect<s32>(

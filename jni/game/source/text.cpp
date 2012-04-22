@@ -12,9 +12,9 @@ extern gui::IGUIEnvironment *guienv;
 
 void loadFonts()
 {
-    guienv->getFont("sdcard/Irrlicht/media/blinkfont.xml");
-    guienv->getFont("sdcard/Irrlicht/media/shoutfont.xml");
-    guienv->getFont("sdcard/Irrlicht/media/bigfont.xml");
+    guienv->getFont("sdcard/Irrlicht/blinkfont.xml");
+    guienv->getFont("sdcard/Irrlicht/shoutfont.xml");
+    guienv->getFont("sdcard/Irrlicht/bigfont.xml");
 }
 
 const f32 blinkTimeGap = 0.5;
@@ -175,7 +175,7 @@ Text *normalMessage(core::stringw str, int y, char *fontFile)
 
 Text *blinkMessage(core::stringw str, int y, double ttl)
 {
-    Text *text = normalMessage(str, y, "sdcard/Irrlicht/media/blinkfont.xml");
+    Text *text = normalMessage(str, y, "sdcard/Irrlicht/blinkfont.xml");
     text->blink = true;
     text->ttl = ttl;
     return text;
@@ -183,7 +183,7 @@ Text *blinkMessage(core::stringw str, int y, double ttl)
 
 void shoutMessage(core::stringw str, int y)
 {
-    Text *text = normalMessage(str, y, "sdcard/Irrlicht/media/shoutfont.xml");
+    Text *text = normalMessage(str, y, "sdcard/Irrlicht/shoutfont.xml");
     text->ttl = 2;
 }
 

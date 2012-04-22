@@ -88,7 +88,7 @@ void createPlatformUpdate(int time)
     {
         // create a platform
         scene::IAnimatedMeshSceneNode *node = smgr->addAnimatedMeshSceneNode(
-            smgr->getMesh(strparty("sdcard/Irrlicht/media/plat", rand()%3, ".obj").c_str())
+            smgr->getMesh(strparty("sdcard/Irrlicht/plat", rand()%3, ".obj").c_str())
             );
         
         f32 s = 1;//0.75;
@@ -124,7 +124,7 @@ void createPlatformUpdate(int time)
         
         if (rand()%100 < 30)// && state == IN_STARTSCREEN)
         {
-            scene::IAnimatedMeshSceneNode *r = smgr->addAnimatedMeshSceneNode(smgr->getMesh("sdcard/Irrlicht/media/rabbit2.b3d"), node);
+            scene::IAnimatedMeshSceneNode *r = smgr->addAnimatedMeshSceneNode(smgr->getMesh("sdcard/Irrlicht/rabbit2.b3d"), node);
             r->setRotation(core::vector3df(90,frandU()*360.0,0));
             r->setPosition(core::vector3df(frandS()*6.0,6+frandU()*1.0,frandS()*2.0));
             r->setAnimationSpeed(2000 + rand()%2000);

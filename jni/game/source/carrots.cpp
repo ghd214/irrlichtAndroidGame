@@ -64,7 +64,7 @@ void addCarrotDisplay()
     iconCarrot->setRotation(core::vector3df(20,0,0));
     */
     
-    video::ITexture *tex = driver->getTexture("sdcard/Irrlicht/media/carrot.png");
+    video::ITexture *tex = driver->getTexture("sdcard/Irrlicht/carrot.png");
     core::dimension2d<u32> dim = tex->getSize();
     carrotImg = guienv->addImage(
         tex,
@@ -80,7 +80,7 @@ void setCarrotDisplayCount(int c)
         iconText->remove();
     }
     
-    iconText = staticText(stringify(c).c_str(), 120,65, 3, "sdcard/Irrlicht/media/blinkfont.xml");
+    iconText = staticText(stringify(c).c_str(), 120,65, 3, "sdcard/Irrlicht/blinkfont.xml");
 }
 
 void removeCarrotDisplay()
@@ -121,7 +121,7 @@ void addCarrots(scene::ISceneNode *platform)
         
         for (int i = 0; i < carrotCount; i ++)
         {
-            scene::IAnimatedMeshSceneNode *node = smgr->addAnimatedMeshSceneNode(smgr->getMesh("sdcard/Irrlicht/media/carrotsmall.obj"),
+            scene::IAnimatedMeshSceneNode *node = smgr->addAnimatedMeshSceneNode(smgr->getMesh("sdcard/Irrlicht/carrotsmall.obj"),
                 platform);
             node->setPosition(core::vector3df(
                 frandS()*carrotMaxGapX,
@@ -189,7 +189,7 @@ void updateCarrots()
                     carrotsCollected ++;
                 }
                 starShower(carrots[i]->getParent(), carrots[i]->getPosition(),
-                    "sdcard/Irrlicht/media/star.png", video::EMT_TRANSPARENT_ADD_COLOR);
+                    "sdcard/Irrlicht/star.png", video::EMT_TRANSPARENT_ADD_COLOR);
                 carrots[i]->remove();
             }
             carrots[i]->drop();

@@ -223,6 +223,7 @@ void initIrrFile() {
 	if (cube)
 		camera->setTarget(cube->getAbsolutePosition());
 */
+    smgr->setActiveCamera(camera);
     gameState = IN_GAME;
 }
 
@@ -561,11 +562,11 @@ void preloadStuff()
     guienv->drawAll();
     driver->endScene();
     
-    smgr->getMesh("sdcard/Irrlicht/media/plat0.obj");
-    smgr->getMesh("sdcard/Irrlicht/media/plat1.obj");
-    smgr->getMesh("sdcard/Irrlicht/edia/plat2.obj");
+    smgr->getMesh("sdcard/Irrlicht/plat0.obj");
+    smgr->getMesh("sdcard/Irrlicht/plat1.obj");
+    smgr->getMesh("sdcard/Irrlicht/plat2.obj");
     loadFonts();
-    driver->getTexture("sdcard/Irrlicht/edia/demo.png");
+    driver->getTexture("sdcard/Irrlicht/demo.png");
     
     //loadText->remove();
     timer->start();
@@ -772,7 +773,7 @@ void nativeDrawIteration() {
 	//	}
 
 
-		natvieDrawIterationIrrFile();
-   // nativeDrawIterationRabbit();
+//		natvieDrawIterationIrrFile();
+    nativeDrawIterationRabbit();
 }
 
