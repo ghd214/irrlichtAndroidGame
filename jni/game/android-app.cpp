@@ -215,7 +215,7 @@ void initIrrFile() {
 
 
 	// And set the camera position so that it doesn't start off stuck in the geometry
-	camera->setPosition(core::vector3df( 0.0f, 10.0f, 1.0f));
+	camera->setPosition(core::vector3df(-15.0f, 10.0f, -11.0f));
     //camera->setRotation(core::vector3df( 0.0f, 90.0f, 0.0f));
     // camera->setTarget(rootNode->getPosition());
 	// Point the camera at the cube node, by finding the first node of type ESNT_CUBE
@@ -763,17 +763,17 @@ void nativeDrawIterationRabbit(){
 
 void nativeDrawIteration() {
 	//	if(gAppAlive == 3){
-	//		nativeDrawIterationIrr();
+//			nativeDrawIterationIrr();
 	//	}else if(gAppAlive ==1){
 //	nativeDrawIterationSydney();
 	//	}else if(gAppAlive ==5){
 //			nativeDrawIterationQuake();
 	//	}else if(gAppAlive ==2){
-	//		natvieDrawIterationIrrFile();
+			natvieDrawIterationIrrFile();
 	//	}
 
 
 //		natvieDrawIterationIrrFile();
-    nativeDrawIterationRabbit();
+//    nativeDrawIterationRabbit();
 }
 
